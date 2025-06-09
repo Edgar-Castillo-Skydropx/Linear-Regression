@@ -1,5 +1,5 @@
 from typing import List
-from model_loader import model
+from model_loader import model, concept, options
 
 respuesta: str = "S"
 
@@ -9,19 +9,17 @@ while respuesta == "S":
     if respuesta == "N":
         break
     elif respuesta == "S":
-        options: List[int] = []
-        print("Ingresa los metros cuadrados de la casa:")
-        options.append(int(input()))
-        print("Ingresa el número de habitaciones:")
-        options.append(int(input()))
-        print("Ingresa los años de antiguedad:")
-        options.append(int(input()))
+        current_options: List[int] = []
+        for option in options:
+            current_options.append(
+                int(input(f"Ingresa la variable: {option}, del concepto: {concept}\n"))
+            )
 
         value = float(model["intercept"])
         for i, coef in enumerate(model["coef"]):
-            value += coef * options[i]
+            value += coef * current_options[i]
 
-        print(f"El valor estimado de la casa es: {value:.2f} unidades monetarias")
+        print(f"El valor estimado de: {concept} es: {value:.2f} unidades.")
 
     else:
         print("Respuesta no válida. Por favor ingrese 'S' o 'N'.")
