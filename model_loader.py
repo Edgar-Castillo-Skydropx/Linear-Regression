@@ -26,5 +26,4 @@ while keepLoop == "S":
     keepLoop = input("¿Desea ingresar más datos? (S/N)\n").upper()
 
 
-# [[80, 2, 5], [100, 3, 10], [120, 4, 2], [90, 3, 8], [110, 3, 4]],  [1300, 1500, 2000, 1400, 1800]
 model = LinearModel.linear_regression(_data, _values)
