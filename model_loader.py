@@ -24,6 +24,8 @@ while breakW == "N":
             _dataI.append(int(input(f"{option}: ")))
         else:
             values.append(int(input(f"{option}: ")))
+    data.append(_dataI)
+    breakW = input("¿Desea ingresar más datos? (S/N)\n").upper()
 
 
 # [[80, 2, 5], [100, 3, 10], [120, 4, 2], [90, 3, 8], [110, 3, 4]],  [1300, 1500, 2000, 1400, 1800]
