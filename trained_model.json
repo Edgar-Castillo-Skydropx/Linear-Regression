@@ -1,1 +1,8 @@
-{}
+{
+  "concept": "Edificios",
+  "variable_names": ["Tamaño (m2)", "Oficinas", "Años"],
+  "intercept": 170.318,
+  "coef": [15.4064, 7.4205, -22.9682],
+  "r2_score": 0.9998,
+  "rmse": 3.7596
+}

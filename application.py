@@ -1,29 +1,7 @@
 from model import predict_value
 from model_loader import get_float_input, get_yes_no_input
-from typing import Dict, List
+from typing import Dict
 import json
-
-
-def save_model_info(model_data: Dict, filename: str = "trained_model.json"):
-    """Guarda la información del modelo en un archivo JSON."""
-    try:
-        # Convertir arrays numpy a listas para serialización JSON
-        save_data = {
-            "concept": model_data["concept"],
-            "variable_names": model_data["variable_names"],
-            "intercept": float(model_data["model_info"]["intercept"]),
-            "coef": model_data["model_info"]["coef"].tolist(),
-            "r2_score": float(model_data["model_info"]["r2_score"]),
-            "rmse": float(model_data["model_info"]["rmse"]),
-        }
-
-        with open(filename, "w", encoding="utf-8") as f:
-            json.dump(save_data, f, indent=2, ensure_ascii=False)
-
-        print(f"✅ Modelo guardado en {filename}")
-
-    except Exception as e:
-        print(f"❌ Error al guardar el modelo: {e}")
 
 
 def load_model_info(filename: str = "trained_model.json") -> Dict:
