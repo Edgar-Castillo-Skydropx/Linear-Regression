@@ -1,5 +1,6 @@
 from model import linear_regression
-from typing import List, Tuple
+from typing import List, Tuple, Dict
+import json
 
 
 def get_int_input(prompt: str) -> int:
@@ -30,6 +31,39 @@ def get_yes_no_input(prompt: str) -> bool:
             return False
         else:
             print("❌ Por favor responda 'S' para sí o 'N' para no.")
+
+
+def save_model_info(
+    concept: str,
+    variable_names: List[str],
+    model_info: Dict,
+    filename: str = "modelo_entrenado.json",
+):
+    """Guarda la información del modelo en un archivo JSON."""
+    try:
+        # Convertir arrays numpy a listas para serialización JSON
+        save_data = {
+            "concept": concept,
+            "variable_names": variable_names,
+            "intercept": float(model_info["intercept"]),
+            "coef": (
+                model_info["coef"].tolist()
+                if hasattr(model_info["coef"], "tolist")
+                else list(model_info["coef"])
+            ),
+            "r2_score": float(model_info["r2_score"]),
+            "rmse": float(model_info["rmse"]),
+        }
+
+        with open(filename, "w", encoding="utf-8") as f:
+            json.dump(save_data, f, indent=2, ensure_ascii=False)
+
+        print(f"✅ Modelo guardado en {filename}")
+        return True
+
+    except Exception as e:
+        print(f"❌ Error al guardar el modelo: {e}")
+        return False
 
 
 def collect_training_data() -> Tuple[str, List[str], List[List[float]], List[float]]:
@@ -104,7 +138,16 @@ def main():
         print(f"R² Score: {model_info['r2_score']:.4f}")
         print(f"RMSE: {model_info['rmse']:.4f}")
 
-        # Guardar información para uso posterior
+        # Guardar modelo automáticamente
+        print("\n💾 Guardando modelo...")
+        if save_model_info(concept, variable_names, model_info):
+            print("🎉 ¡Modelo entrenado y guardado exitosamente!")
+            print(
+                "Ahora puedes ejecutar 'application_mejorada.py' para hacer predicciones."
+            )
+        else:
+            print("⚠️ El modelo se entrenó pero no se pudo guardar.")
+
         return {
             "concept": concept,
             "variable_names": variable_names,
