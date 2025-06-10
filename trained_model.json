@@ -1,8 +1,8 @@
 {
   "concept": "Edificios",
-  "variable_names": ["Tamaño (m2)", "Oficinas", "Años"],
-  "intercept": 170.318,
-  "coef": [15.4064, 7.4205, -22.9682],
-  "r2_score": 0.9998,
-  "rmse": 3.7596
+  "variable_names": ["Tamaño(m2)", "Oficinas", "Años"],
+  "intercept": 170.31802120141288,
+  "coef": [15.406360424028277, 7.4204946996466, -22.968197879858657],
+  "r2_score": 0.9997921430056121,
+  "rmse": 3.759557901984583
 }

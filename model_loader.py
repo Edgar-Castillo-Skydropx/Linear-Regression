@@ -37,7 +37,7 @@ def save_model_info(
     concept: str,
     variable_names: List[str],
     model_info: Dict,
-    filename: str = "modelo_entrenado.json",
+    filename: str = "trained_model.json",
 ):
     """Guarda la información del modelo en un archivo JSON."""
     try:

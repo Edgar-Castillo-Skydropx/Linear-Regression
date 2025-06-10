@@ -1,6 +1,6 @@
 from model import predict_value
 from model_loader import get_float_input, get_yes_no_input
-from typing import Dict
+from typing import Dict, List
 import json
 
 
@@ -17,11 +17,26 @@ def load_model_info(filename: str = "trained_model.json") -> Dict:
         return None
 
 
+def predict_with_equation(model_data: Dict, features: List[float]) -> float:
+    """
+    Realiza una predicción usando la ecuación de regresión lineal.
+
+    Predicción = intercept + coef[0]*feature[0] + coef[1]*feature[1] + ...
+    """
+    intercept = model_data["intercept"]
+    coefficients = model_data["coef"]
+
+    prediction = intercept
+    for i, (coef, feature) in enumerate(zip(coefficients, features)):
+        prediction += coef * feature
+
+    return prediction
+
+
 def make_predictions(model_data: Dict):
     """Realiza predicciones usando el modelo entrenado."""
     concept = model_data["concept"]
     variable_names = model_data["variable_names"]
-    model_info = model_data["model_info"]
 
     print(f"\n🔮 Predicciones para '{concept}'")
     print("=" * 50)
@@ -37,15 +52,15 @@ def make_predictions(model_data: Dict):
 
         # Realizar predicción
         try:
-            prediction = predict_value(model_info, features)
+            prediction = predict_with_equation(model_data, features)
 
             print(f"\n🎯 Predicción:")
             print(f"  {concept}: {prediction:.2f} unidades")
 
             # Mostrar ecuación utilizada
             print(f"\n📐 Ecuación utilizada:")
-            equation = f"  {concept} = {model_info['intercept']:.4f}"
-            for i, (name, coef) in enumerate(zip(variable_names, model_info["coef"])):
+            equation = f"  {concept} = {model_data['intercept']:.4f}"
+            for i, (name, coef) in enumerate(zip(variable_names, model_data["coef"])):
                 sign = "+" if coef >= 0 else ""
                 equation += f" {sign}{coef:.4f}*{name}"
             print(equation)
@@ -62,17 +77,16 @@ def show_model_summary(model_data: Dict):
     """Muestra un resumen del modelo entrenado."""
     concept = model_data["concept"]
     variable_names = model_data["variable_names"]
-    model_info = model_data["model_info"]
 
     print(f"\n📊 Resumen del Modelo")
     print("=" * 40)
     print(f"Concepto predicho: {concept}")
     print(f"Variables predictoras: {', '.join(variable_names)}")
-    print(f"Precisión (R²): {model_info['r2_score']:.4f}")
-    print(f"Error (RMSE): {model_info['rmse']:.4f}")
+    print(f"Precisión (R²): {model_data['r2_score']:.4f}")
+    print(f"Error (RMSE): {model_data['rmse']:.4f}")
 
     # Interpretación del R²
-    r2 = model_info["r2_score"]
+    r2 = model_data["r2_score"]
     if r2 >= 0.9:
         interpretation = "Excelente"
     elif r2 >= 0.7:
